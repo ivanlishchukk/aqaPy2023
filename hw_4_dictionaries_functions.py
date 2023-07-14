@@ -17,12 +17,6 @@ def mark_upper_intermediate():
 mark_upper_intermediate()
 
 #Task3
-''' 
-3.Створіть списки із значеннями для name, surname, location, наприклад name = ['Alex', 'John', 'Simba']. 
-Напишіть програму, яка створює словники з даними випадкових людей на основі ваших списків, роздрукуйте результат. 
-Для випадковості значень скористайтесь модулем random. приклад згенерованого словника:
-{'name':'Liza', 'surname':'Djoconda', 'location':'Florence'}
-'''
 import random
 keys_list = ['name', 'surname', 'location']
 name_list = ['John', 'Hanah', 'Stieven', 'Andre', 'Laura', 'Marie']
