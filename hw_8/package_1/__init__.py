@@ -1,0 +1,1 @@
+from .package_2 import sum, avg

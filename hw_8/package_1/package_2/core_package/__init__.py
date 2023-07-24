@@ -1,0 +1,1 @@
+from .hw_8_t1_math import sum, diff, avg, perc

@@ -1,0 +1,1 @@
+from .core_package import sum, avg
