@@ -35,4 +35,4 @@ def your_age(age):
     age_dt = time_end - time_start
     age_ts = datetime.datetime.timestamp(time_end) - datetime.datetime.timestamp(time_start)
     return f"Вік у форматі datetime: {age_dt} \nВік у форматі timestamp: {age_ts}"
-print(your_age(datetime.datetime(year=1998, month=5, day=5, hour=7, minute=15, second=5)))
+print(your_age(datetime.datetime(year=1998, month=7, day=5, hour=7, minute=15, second=5)))
