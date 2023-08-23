@@ -1,9 +1,3 @@
-'''
-скористайтесь pytest.
-
-напишіть два тести, які перевіряють відповідно чи додався рядок і чи він видалився.
-Y якості перевірного csv можете скористатись доданим до завдання файлом або будь-яким іншим.
-'''
 import csv
 
 
@@ -38,6 +32,3 @@ class CSVManipulation:
                 csv_writer.close()
 
 
-#csv_file = CSVManipulation()
-#csv_file.add_row('example.csv', row_data='Ivan, Lishchuk, age, Male, salary')
-#csv_file.delete_row('example.csv', row_index=3)
