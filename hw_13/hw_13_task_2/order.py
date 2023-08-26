@@ -2,6 +2,7 @@ from dishes.pizza import Pizza
 from dishes.risotto import Risotto
 from dishes.pasta import Pasta
 
+
 class OrderFactory:
     @staticmethod
     def get_dish(dish_type):
@@ -11,6 +12,7 @@ class OrderFactory:
             return Risotto()
         elif dish_type == 'pasta':
             return Pasta()
+
 
 order_risotto = OrderFactory.get_dish('risotto')
 print(order_risotto.get_dish('classic'))
