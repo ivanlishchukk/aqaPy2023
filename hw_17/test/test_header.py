@@ -31,3 +31,7 @@ def test_compare_items(header):
     time.sleep(3)
 
 
+def test_language_change(header):
+    header.change_language()
+    header.assert_language_changed()
+    time.sleep(3)

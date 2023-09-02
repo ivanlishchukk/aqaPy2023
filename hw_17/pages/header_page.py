@@ -8,12 +8,12 @@ class Header(BasePage):
     def check_logo_exist(self):
         locator = ("xpath", "//div[@class='header__logo']")
         element = self.wait_until_element_appears(locator)
-        element.mouse_click(locator)
+        mouse_click = self.mouse_click(locator)
 
     def click_on_compare_items_button(self):
         locator = ("xpath", "//div[@class='header__icon --compare']")
         element = self.wait_until_element_appears(locator)
-        element.mouse_click(locator)
+        mouse_click = self.mouse_click(locator)
 
     def assert_compare_button_works(self):
         locator = ("xpath", "//h1")
@@ -23,7 +23,7 @@ class Header(BasePage):
     def click_on_empty_basket_button(self):
         locator = ("xpath", "//span[@id='cart']//span[@class='icon-counter__icon']//*[name()='svg']")
         element = self.wait_until_element_appears(locator)
-        element.mouse_click(locator)
+        mouse_click = self.mouse_click(locator)
 
     def assert_basket_is_empty(self):
         locator = ("xpath", "//p[@class='text-center']")
@@ -33,7 +33,7 @@ class Header(BasePage):
     def go_to_login_page(self):
         locator = ("xpath", "//span[@id='open-login-modal']")
         element = self.wait_until_element_appears(locator)
-        element.mouse_click(locator)
+        mouse_click = self.mouse_click(locator)
 
     def assert_login_page(self):
         locator = ("xpath", "//div[@class='modal-window__title']")
@@ -48,4 +48,14 @@ class Header(BasePage):
     def assert_search_item(self):
         locator = ("xpath", "//div[@class='search-name'][1]")
         element = self.wait_until_element_appears(locator)
-        assert element.text == ('FENDER AMERICAN PERFORMER STRATOCASTER MN SATIN LAKE PLACID BLUE Електрогітара')
+        assert element.text == 'FENDER AMERICAN PERFORMER STRATOCASTER MN SATIN LAKE PLACID BLUE Електрогітара'
+
+    def change_language(self):
+        locator = ("xpath", "//button[contains(text(),'Рус')]")
+        element = self.wait_until_element_appears(locator)
+        mouse_click = self.mouse_click(locator)
+
+    def assert_language_changed(self):
+        locator = ("xpath", "//div[@class='header__languages']")
+        element = self.wait_until_element_appears(locator)
+        assert element.text == 'Укр'

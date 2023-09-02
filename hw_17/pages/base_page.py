@@ -14,5 +14,5 @@ class BasePage:
     def mouse_click(self, locator):
         self.wait_until_element_appears(locator).click()
 
-    def send_keys_to_field(self, locator,message):
-        self.wait_until_element_appears(locator).send_keys(message)
+    def send_keys_to_field(self, locator, text):
+        self.wait_until_element_appears(locator).send_keys(text)
