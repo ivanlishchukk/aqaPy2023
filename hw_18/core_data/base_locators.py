@@ -1,0 +1,15 @@
+class BaseLocator:
+    def __init__(self):
+        self.compare = ("xpath", "//div[@class='header__icon --compare']")
+        self.compare_conf = ("xpath", "//h1")
+        self.basket = ("xpath", "//span[@id='cart']//span[@class='icon-counter__icon']//*[name()='svg']")
+        self.basket_conf = ("xpath", "//p[@class='text-center']")
+        self.login = ("xpath", "//span[@id='open-login-modal']")
+        self.modal = ("xpath", "//div[@class='modal-window__title']")
+        self.phone_input = ("xpath", "//input[@id='input-phone']")
+        self.password = ("xpath","//input[@id='input-password']")
+        self.submit_login = ("xpath","//input[@id='input-password']")
+        self.search_field = ("xpath", "//input[@value='Увійти']")
+        self.search_field_conf = ("xpath", "//div[@class='search-name'][1]")
+        self.language = ("xpath", "//button[contains(text(),'Рус')]")
+        self.language_conf = ("xpath", "//div[@class='header__languages']")
