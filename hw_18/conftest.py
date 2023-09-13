@@ -10,6 +10,8 @@ def driver():
     driver = Chrome()
     driver.maximize_window()
     driver.get('https://muztorg.ua/uk/')
+    driver.get_cookie('flag')
+    driver.add_cookie({'name':'flag', 'value':'red'})
 
     yield driver
     driver.close()
@@ -24,5 +26,6 @@ def header(driver):
 @pytest.fixture
 def categories(driver):
     driver.get("https://muztorg.ua/uk/gitari/")
+    driver.maximize_window()
 
     yield CategoryPage(driver)
