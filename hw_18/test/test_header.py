@@ -1,5 +1,5 @@
 import time
-from hw_17.conftest import header, driver
+from hw_18.conftest import header, driver
 
 
 def test_go_to_login(header):
@@ -35,3 +35,8 @@ def test_language_change(header):
     header.change_language()
     header.assert_language_changed()
     time.sleep(3)
+
+
+def test_login(header):
+    header.login_user()
+    time.sleep(10)
