@@ -9,4 +9,6 @@ class PeopleService:
     def get_people(self, people_id:str) -> Response:
         return get(f"{self.__people_url}/{people_id}")
 
-    
+    def get_page(self, page_id:str) -> Response:
+        return get(f"{self.__people_url}/?page={page_id}")
+
