@@ -26,6 +26,13 @@ def create_an_object():
     return response, response.json()['id']
 
 
+def create_empty_object():
+    headers = {"content-type": "application/json"}
+    payload = json.dumps({})
+    response = requests.post(url, data=payload, headers=headers)
+    return response, response.json()['id']
+
+
 def update_an_object(obj_id, changed_dict):
     headers = {"content-type": "application/json"}
     payload = json.dumps(changed_dict)

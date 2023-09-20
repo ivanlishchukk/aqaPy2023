@@ -31,6 +31,14 @@ def test_create_an_object():
     assert infra.get_an_object(obj_id).json()['name'] == 'Apple Home'
 
 
+def test_create_empty_object():
+    response, obj_id = infra.create_empty_object()
+    get_response = infra.get_an_object(obj_id)
+    assert response.status_code == 200
+    assert get_response.status_code == 200
+    assert infra.get_an_object(obj_id).json()['name'] is None
+
+
 def test_update_object():
     response, obj_id = infra.create_an_object()
     changed_obj = infra.update_an_object(obj_id, {"name": "Google Assistant",
