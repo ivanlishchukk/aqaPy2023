@@ -9,3 +9,5 @@ pytest~=7.4.0
 selenium~=4.11.2
 mouse~=0.7.1
 pynput~=1.7.6
+xmltodict~=0.13.0
+SQLAlchemy~=2.0.21
