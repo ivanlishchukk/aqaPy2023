@@ -1,94 +1,33 @@
-import numpy as np
-
-from hw_22.session_handler import session
-from hw_22.model.endpoint_obj import Objects
-from requests import get, Response
-import requests
-import json
+from hw_22.repositories.api_sql_defs import ApiSqlDefs
+import hw_22.repositories.api_sql_defs
 
 
-class ApiSqlAdapter:
+class Adapter:
     def __init__(self):
-        self.__session = session
         self.url = "https://api.restful-api.dev/objects"
 
-    def select_object_by_name(self, name):
-        return self.__session.query(Objects).filter_by(name=name)
+    def post_get_insert_select(self, name, price, color):
+        t = ApiSqlDefs()
+        response, obj_id = t.post_an_object(name=name, price=price, color=color)
+        get_response = t.get_an_object(obj_id)
+        assert response.status_code == 200
+        assert get_response.status_code == 200
+        t.insert_an_object(obj_id)
+        assert t.select_object_by_id(obj_id).id == obj_id
 
-    def select_object_by_id(self, id):
-        return self.__session.get(Objects, {'id': id})
+    def put_get_update_select(self, name_to_get: str, name: str, price, color: str):
+        t = ApiSqlDefs()
+        obj_id = t.obj_id_from_cell(name_to_get)
+        t.put_an_object(obj_id, changed_dict={"name": name,
+                                              "data": {"price": price, "color": color}})
+        assert t.get_an_object(obj_id).json()['name'] == name
+        t.update_an_object_name_from_api(obj_id)
+        assert t.select_object_by_id(obj_id).name == name
 
-    def obj_id_from_cell(self, name):
-        cell = self.__session.query(Objects).filter_by(name=name).first()
-        obj_id = (cell.id)
-        return obj_id
-
-    def select_all(self):
-        bunch_of_objects = []
-        for object in self.__session.query(Objects).all():
-            bunch_of_objects.append(object)
-        return bunch_of_objects
-
-    def add_one_row(self, endpoint_obj):
-        self.__session.add(endpoint_obj)
-        self.__session.commit()
-
-    def commit_session(self, endpoint_obj):
-        self.__session.commit()
-
-    def insert_an_object(self, obj_id):
-        object_to_add = Objects(
-            id=ApiSqlAdapter().get_object_id(obj_id),
-            name=ApiSqlAdapter().get_object_name(obj_id),
-            price=ApiSqlAdapter().get_object_price(obj_id),
-            color=ApiSqlAdapter().get_object_color(obj_id)
-        )
-        ApiSqlAdapter().add_one_row(object_to_add)
-
-    def update_an_object_name(self, obj_id, new_name):
-        name = new_name
-        object_to_update = session.query(Objects).filter_by(id=obj_id).first()
-        object_to_update.name = name
-        ApiSqlAdapter().commit_session(object_to_update.name)
-
-    def update_an_object_name_from_api(self, obj_id):
-        new_name = ApiSqlAdapter().get_object_name(obj_id)
-        object_to_update = session.query(Objects).filter_by(id=obj_id).first()
-        object_to_update.name = new_name
-        ApiSqlAdapter().commit_session(object_to_update.name)
-
-    def get_an_object(self, object_id):
-        response = requests.get(f"{self.url}/{object_id}")
-        return response
-
-    def post_an_object(self):
-        headers = {"content-type": "application/json"}
-        payload = json.dumps({"name": "Apple Home", "data": {"price": 150, "color": "black"}})
-        response = requests.post(self.url, data=payload, headers=headers)
-        return response, response.json()['id']
-
-    def put_an_object(self, obj_id, changed_dict):
-        headers = {"content-type": "application/json"}
-        payload = json.dumps(changed_dict)
-        response = requests.put(f'{self.url}/{obj_id}', data=payload, headers=headers)
-        return response
-
-    def get_object_id(self, obj_id) -> Response:
-        object = get(f"{self.url}/{obj_id}")
-        id = object.json()['id']
-        return id
-
-    def get_object_name(self, obj_id) -> Response:
-        object = get(f"{self.url}/{obj_id}")
-        name = object.json()['name']
-        return name
-
-    def get_object_price(self, obj_id) -> Response:
-        object = get(f"{self.url}/{obj_id}")
-        price = object.json()['data']['price']
-        return price
-
-    def get_object_color(self, obj_id) -> Response:
-        object = get(f"{self.url}/{obj_id}")
-        color = object.json()['data']['color']
-        return color
+    def update_select_put_get(self, name_to_get: str, name: str):
+        t = ApiSqlDefs()
+        obj_id = t.obj_id_from_cell(name_to_get)
+        t.update_an_object_name(obj_id, name)
+        assert t.select_object_by_id(obj_id).name == name
+        t.put_an_object(obj_id, changed_dict={"name": t.select_object_by_id(obj_id).name})
+        assert t.get_an_object(obj_id).json()['name']
