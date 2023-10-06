@@ -3,32 +3,8 @@ import numpy as np
 from hw_22.session_handler import session
 from hw_22.model.endpoint_obj import Objects
 from requests import get, Response
-from sqlalchemy.sql.expression import Insert
-from sqlalchemy import select, insert, update
 import requests
 import json
-
-'''
-в якості ендпойнта для апі візьміть https://restful-api.dev/
-
-т.як ендпойнт створює айді запису самостійно, реалізуйте наступні зв'язки:
-
-api=>sql
-POST+GET=>INSERT+SELECT
-PUT+GET=>UPDATE+SELECT
-
-sql=>api
-UPDATE+SELECT=>PUT+GET
-
-Tam де вказано +GET, +SELECT треба виконати ці операції після операцій зміни/створення, 
-щоб пересвідчитись, що об'єкти створились/оновились правильно. 
-
-Hапишіть довільну кількість тестів, щоб покрити функціонал цього адаптера.
-
-Приклад
-Ви створюєте об'єкт в апі через POST, пересвідчуєтесь, що він створився через GET, 
-записуєте поля об'єкта в таблицю за допомогою INSERT, перевіряєте, чи створився запис за допомогою SELECT
-'''
 
 
 class ApiSqlAdapter:
@@ -57,24 +33,29 @@ class ApiSqlAdapter:
         self.__session.add(endpoint_obj)
         self.__session.commit()
 
-    def update_the_row(self, endpoint_obj):
-        self.__session.delete(endpoint_obj)
+    def commit_session(self, endpoint_obj):
         self.__session.commit()
 
     def insert_an_object(self, obj_id):
         object_to_add = Objects(
-                                id=ApiSqlAdapter().get_object_id(obj_id),
-                                name=ApiSqlAdapter().get_object_name(obj_id),
-                                price=ApiSqlAdapter().get_object_price(obj_id),
-                                color=ApiSqlAdapter().get_object_color(obj_id)
-                                )
+            id=ApiSqlAdapter().get_object_id(obj_id),
+            name=ApiSqlAdapter().get_object_name(obj_id),
+            price=ApiSqlAdapter().get_object_price(obj_id),
+            color=ApiSqlAdapter().get_object_color(obj_id)
+        )
         ApiSqlAdapter().add_one_row(object_to_add)
 
-    def update_an_object_name(self, obj_id):
+    def update_an_object_name(self, obj_id, new_name):
+        name = new_name
+        object_to_update = session.query(Objects).filter_by(id=obj_id).first()
+        object_to_update.name = name
+        ApiSqlAdapter().commit_session(object_to_update.name)
+
+    def update_an_object_name_from_api(self, obj_id):
         new_name = ApiSqlAdapter().get_object_name(obj_id)
-        object_to_update = session.query(Objects.__tablename__).filter(Objects.__tablename__.id == f"{obj_id}").first()
-        object_to_update.name = str(new_name)
-        ApiSqlAdapter().update_the_row(object_to_update)
+        object_to_update = session.query(Objects).filter_by(id=obj_id).first()
+        object_to_update.name = new_name
+        ApiSqlAdapter().commit_session(object_to_update.name)
 
     def get_an_object(self, object_id):
         response = requests.get(f"{self.url}/{object_id}")
